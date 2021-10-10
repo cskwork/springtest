@@ -1,0 +1,68 @@
+https://liante0904.tistory.com/113
+
+빈 생성 에러 디버그 Error creating bean with name 'XXX'
+
+--> Check Servlet
+
+https://data-make.tistory.com/545
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
+public class RepoTest {
+ 
+    @Autowired
+    UserRepository urepo;
+ 
+    @Test
+    public void beanTest() {
+        assertNotNull(urepo);
+    }
+ 
+    @Test
+    public void selectTest() {
+        UserInfo user = urepo.select("admin");
+        assertNotNull(user);
+        assertEquals(user.getName(), "관리자");
+        assertEquals(user.getPassword(), "admin");
+ 
+        user = urepo.select("admin2");
+        assertNull(user);
+    }
+ 
+    @Test
+    public void selectAllTest() {
+        List<UserInfo> users = urepo.selectAll();
+        assertTrue(users.size() == 2);
+    }
+ 
+    @Test
+    @Transactional // 테스트 끝난 후 자동 rollback
+    public void insertTest() {
+        UserInfo user = new UserInfo("hong", "홍길동", "hong");
+        int result = urepo.insert(user);
+        assertTrue(result == 1);
+ 
+        UserInfo selected = urepo.select(user.getUserId());
+        assertEquals(user.getName(), selected.getName());
+    }
+ 
+    @Test
+    @Transactional
+    public void updateTest() {
+        UserInfo selected = urepo.select("admin");
+        selected.setName("수정본");
+        urepo.update(selected);
+ 
+        UserInfo selected2 = urepo.select("admin");
+        assertEquals(selected2.getName(), "수정본");
+    }
+ 
+    @Test
+    @Transactional
+    public void deleteTest() {
+        urepo.delete("admin");
+        UserInfo selected = urepo.select("admin");
+        assertNull(selected);
+    }
+ 
+}
+ 

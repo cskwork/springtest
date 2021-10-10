@@ -3,9 +3,10 @@ package com.board.test;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.Connection;
-
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -19,18 +20,29 @@ import org.springframework.test.context.web.WebAppConfiguration;
 //@ContextConfiguration(locations ={"classpath:/WEB-INF/spring/**/*.xml"})
 @ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
 public class DataSourceTest {
+	//https://logging.apache.org/log4j/2.x/manual/api.html
+	private Logger log = LogManager.getLogger("DataSourceTest");
 	
 	 @Autowired
 	private DataSource ds;
 	
 	 @Autowired
 	 SqlSessionTemplate st;
-
+	 
 	// 모든 테스트들은 @Test를 갖는다.
     @Test
     public void dsTest() {
         // DataSource가 null이 아니다! 
         assertNotNull(ds);
+        
+        try(Connection con = ds.getConnection()){
+			log.info("DataSource 설정 성공");
+			log.info(con);
+		}catch(Exception e) {
+			log.error("실패");
+			e.printStackTrace();
+		}
+        
     }
     
     @Test
@@ -39,16 +51,5 @@ public class DataSourceTest {
         assertNotNull(st);
     }
 
-   
-	@Test
-	public void testDS() throws Exception{
-		try(Connection con = ds.getConnection()){
-			System.out.println("DataSource 설정 성공");
-			System.out.println(con);
-		}catch(Exception e) {
-			System.out.println("실패");
-			e.printStackTrace();
-		}
-	}
-	
 }
+//https://www.marcobehler.com/guides/java-logging
