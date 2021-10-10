@@ -23,6 +23,7 @@
 		
 		<div>
 			<a href="/board/edit?bno=${view.bno}">게시물 수정</a>
+			<a href="/board/delete?bno=${view.bno}">게시물 삭제</a>
 		</div>
 		
 </body>

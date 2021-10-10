@@ -14,4 +14,10 @@ public interface BoardService {
 	
 	public void edit(BoardVO vo) throws Exception;
 	
+	public void delete(int bno) throws Exception;
+	
+	public int count() throws Exception;
+	
+	public List listPage(int displayPost, int postNum) throws Exception;
+		
 }

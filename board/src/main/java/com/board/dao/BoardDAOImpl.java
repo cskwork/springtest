@@ -1,5 +1,6 @@
 package com.board.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,4 +45,29 @@ public class BoardDAOImpl implements BoardDAO {
 		sql.update(namespace + ".edit", vo);
 	}
 
+	@Override
+	public void delete(int bno) throws Exception {
+		// TODO Auto-generated method stub
+		 sql.delete(namespace + ".delete", bno);
+	}
+
+	@Override
+	public int count() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(namespace + ".count");
+	}
+
+	@Override
+	public List listPage(int displayPost, int postNum) throws Exception {
+		// TODO Auto-generated method stub
+		HashMap<String, Integer> data = new HashMap();
+		data.put("displayPost", displayPost);
+		data.put("postNum", postNum);
+		return sql.selectList(namespace+ ".listPage", data);
+	}
+
 }
+
+// # listPage
+// DAO와 매퍼에서는 데이터를 하나만 전송할 수 있기 때문에, 
+// 2개 이상의 데이터를 다룰 때는 VO(Value Object)를 사용하거나 해시맵을 이용
