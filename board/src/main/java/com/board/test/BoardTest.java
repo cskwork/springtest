@@ -27,26 +27,21 @@ import com.board.service.BoardService;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations ={"classpath:/WEB-INF/spring/**/*.xml"})
-@ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
+@ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/**/*.xml"}) //locations ={"classpath:/WEB-INF/spring/**/*.xml"}
 public class BoardTest {
 	//https://logging.apache.org/log4j/2.x/manual/api.html
-	private Logger log = LogManager.getLogger("BoardTest");
+	private Logger log = LogManager.getLogger("BoardTest");	
 	
 	@Autowired
 	private DataSource ds;
-	
 	@Autowired
 	SqlSessionTemplate st;
-	 
 	@Inject
 	BoardService service;
 	 
-	// 모든 테스트들은 @Test를 갖는다.
     @Test
-    public void dsTest() {
-        // DataSource가 null이 아니다! 
-        assertNotNull(ds);
+    public void dsTest() { 
+        assertNotNull(ds); // DataSource가 null이 아니다! 
         
         try(Connection con = ds.getConnection()){
 			log.info("DataSource 설정 성공");
@@ -54,8 +49,7 @@ public class BoardTest {
 		}catch(Exception e) {
 			log.error("실패");
 			e.printStackTrace();
-		}
-        
+		}   
     }
 
 	// 게시물 목록
@@ -82,7 +76,6 @@ public class BoardTest {
     	assertThat(vo.getContent(), is(notNullValue()));
     	assertThat(vo.getWriter(), is(equalTo(WRITER)));	
     }
-	
 
 }
 /*
