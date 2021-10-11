@@ -1,0 +1,7 @@
+https://sematext.com/blog/log4j2-tutorial/#toc-what-is-log4j-2-and-why-should-you-use-it-0
+
+additivity="false"
+로그 중복으로 찍히는 것 방지 
+없으면  root, logger에 debug level에 console로 찍히게 되어 있으면 중복으로 2번찍힘. 
+
+log4j2.xml 은 각 프로젝트 별 별도로 파일이 필요함. 

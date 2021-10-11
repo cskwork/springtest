@@ -36,6 +36,14 @@ int startPageNum = endPageNum - (pageNum_cnt - 1);
 마지막 페이지 번호 = ((올림)(현재 페이지 번호 / 한번에 표시할 페이지 번호의 갯수)) * 한번에 표시할 페이지 번호의 갯수
 시작 페이지 = 마지막 페이지 번호 - 한번에 표시할 페이지 번호의 갯수 + 1
 
+ex2)
+		 * at page 20
+		 * 20/10 = 2 * 10 = 20 = endpagenum
+		 * 20 - (10 - 1) = 11 = startpagenum
+		 * 
+		 * at page 21
+		 * 21/10 = 3 * 10 = 30 = endpagenum
+		 * 30 - (10-1) = 21 = startpagenum
 ---
 
 
@@ -75,5 +83,13 @@ if(endPageNum > endPageNum_tmp) {
 
 1차 계산의 결과가 2차 계산의 결과보다 작으므로 조건문은 false가 되어 실행되지 않으므로, 1차 계산에서 나온 결과인 10이 그대로 나오게 됩니다.
 
-
+ex2)
+		 * at page 11
+		 * 11/10 = 2 * 10 = 20 = endpagenum
+		 * 20 - (11 - 1) = 10 = startpagenum
+		 * 
+		 * at page 21
+		 * 21/10 = 3 * 10 = 30 = endpagenum
+		 * 30 - (10-1) = 21 = startpagenum
+---
 

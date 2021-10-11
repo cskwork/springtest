@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+ 
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+        <Property name="APP_LOG_ROOT">c:/log</Property>
+    </Properties>
+     
+    <Appenders>
+     
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+         
+        <!-- File Appenders on need basis -->
+        <RollingFile name="frameworkLog" fileName="${APP_LOG_ROOT}/app-framework.log"
+            filePattern="${APP_LOG_ROOT}/app-framework-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 일별 로그 파일 생성-->
+                <SizeBasedTriggeringPolicy size="10MB" /> <!-- 10MB 용량이 초과시 DefaultRolloverStrategy 정책만큼 넘버링 -->      
+            </Policies>
+            <DefaultRolloverStrategy max="50"/><!-- 롤링 파일 50개 까지 생성 -->
+        </RollingFile>
+         
+        <RollingFile name="debugLog" fileName="${APP_LOG_ROOT}/app-debug.log"
+            filePattern="${APP_LOG_ROOT}/app-debug-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 일별 로그 파일 생성-->
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="50"/>
+        </RollingFile>
+         
+        <RollingFile name="infoLog" fileName="${APP_LOG_ROOT}/app-info.log"
+            filePattern="${APP_LOG_ROOT}/app-info-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 일별 로그 파일 생성-->
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="50"/>
+        </RollingFile>
+         
+        <RollingFile name="errorLog" fileName="${APP_LOG_ROOT}/app-error.log"
+            filePattern="${APP_LOG_ROOT}/app-error-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 일별 로그 파일 생성-->
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="50"/>
+        </RollingFile>
+         
+        <RollingFile name="perfLog" fileName="${APP_LOG_ROOT}/app-perf.log"
+            filePattern="${APP_LOG_ROOT}/app-perf-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+         
+        <RollingFile name="traceLog" fileName="${APP_LOG_ROOT}/app-trace.log"
+            filePattern="${APP_LOG_ROOT}/app-trace-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+         
+    </Appenders>
+ 
+    <Loggers>
+     	
+     	<!-- 현재 추적중인 에러 로그 -->
+        <Logger name="com.board.controller" additivity="false" level="trace">
+            <AppenderRef ref="traceLog" />
+            <AppenderRef ref="Console" />
+        </Logger>
+         
+        <!--  기본 에러 로그 -->
+        <Logger name="com.board.controller" additivity="false" level="debug">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="Console"  />
+        </Logger>
+         
+        <!--  성능 추적 -->
+        <Logger name="org.framework.package" additivity="false" level="info">
+            <AppenderRef ref="perfLog" />
+            <AppenderRef ref="Console"/>
+        </Logger>
+        
+        <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
+	     <logger name="org.springframework.web" level="info" additivity="false" >
+	      <AppenderRef ref="Console" />
+	      <AppenderRef ref="frameworkLog" />
+	     </logger>
+                 
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+        </Root>
+ 
+    </Loggers>
+ 
+</Configuration>

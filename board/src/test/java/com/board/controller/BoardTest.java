@@ -1,4 +1,5 @@
-package com.board.test;
+package com.board.controller;
+
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

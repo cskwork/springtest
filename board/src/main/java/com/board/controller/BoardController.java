@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,19 @@ import com.board.service.BoardService;
 @Controller
 @RequestMapping("/board/")
 public class BoardController {
+	private static final Logger LOGGER = LogManager.getLogger(BoardController.class);	
 	
+	public static void main(String[] args) {
+	        try {
+				LOGGER.info("This is an INFO level log message!");
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	}
+	 
 	@Inject
 	BoardService service;
 	
@@ -100,6 +114,14 @@ public class BoardController {
 		
 		// 표시되는 페이지 번호 중 첫번째 번호
 		int startPageNum = endPageNum - (pageNum_cnt -1);
+		
+		LOGGER.debug("게시물 갯수 "+ count );
+		
+		// 마지막 번호 재계산
+		int endPageNum_tmp = (int)(Math.ceil((double)count / (double)pageNum_cnt));
+		if(endPageNum > endPageNum_tmp) {
+			endPageNum = endPageNum_tmp;
+		}
 		
 		List<BoardVO> list = null;
 		list = service.listPage(displayPost, postNum);

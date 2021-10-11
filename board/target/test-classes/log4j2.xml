@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="INFO">
-
-<!-- Logging Properties -->
-	<Properties>
-	  <Property name="logNm">logtest</Property>
-	  <Property name="layoutPattern">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
-	  <Property name="APP_LOG_ROOT">c:/log</Property>
-	</Properties>
-	
-	<Appenders>
-	  <!-- Console Appender -->
-	  <Console name="console" target="SYSTEM_OUT">
-	   <PatternLayout pattern="${layoutPattern}" />
-	  </Console>
-	  
-	   <!-- File Appenders on need basis -->
-	  <RollingFile name="file" fileName="/log/${logNm}.log" filePattern="/log/logs/${logNm}_%d{yyyy-MM-dd}_%i.log">
-	   <PatternLayout pattern="${layoutPattern}" />
-	   <Policies>
-	    <SizeBasedTriggeringPolicy size="10MB" /> <!-- 10MB 용량이 초과시 DefaultRolloverStrategy 정책만큼 넘버링 -->      
-	    <TimeBasedTriggeringPolicy module="true" interval="1" /><!-- 일별 로그 파일 생성-->
-	   </Policies>
-	   <DefaultRolloverStrategy max="500" fileIndex="min" /><!-- 롤링 파일 500개 까지 생성 -->
-	  </RollingFile>
-	 </Appenders>
-
-	 <Loggers>
-	  <!-- 기본 레벨은 debug -->
-	  <Root level="debug" additivity="false" >
-	   <AppenderRef ref="console" />
-	   <AppenderRef ref="file" />
-	  </Root>
-	
-	     <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
+<Configuration status="WARN" monitorInterval="30">
+ 
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+        <Property name="APP_LOG_ROOT">c:/log/unittest</Property>
+    </Properties>
+     
+    <Appenders>
+     
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+         
+        <!-- File Appenders on need basis -->      
+        <RollingFile name="traceLog" fileName="${APP_LOG_ROOT}/app-trace.log"
+            filePattern="${APP_LOG_ROOT}/app-trace-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+         
+    </Appenders>
+ 
+    <Loggers>
+     	
+     	<!-- 현재 추적중인 에러 로그 -->
+        <Logger name="com.board.controller" additivity="false" level="trace">
+            <AppenderRef ref="traceLog" />
+            <AppenderRef ref="Console" />
+        </Logger>
+         
+        <!--  기본 에러 로그 -->
+        <!--  
+        <Logger name="com.board.controller" additivity="false" level="debug">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="Console"  />
+        </Logger>
+        -->
+         
+        <!--  성능 추적 -->
+        <Logger name="org.framework.package" additivity="false" level="info">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        
+        <!-- 스프링 프레임워크에서 찍는건 level을 info로 설정 -->
 	     <logger name="org.springframework" level="info" additivity="false" >
-	      <AppenderRef ref="console" />
-	      <AppenderRef ref="file" />
+	      <AppenderRef ref="Console" />
 	     </logger>
-		 <!-- 다른 기본 패키지도 설정 제어 가능하다. -->
-	     <logger name="org.apache.commons.digester" level="info" additivity="false" >
-	      <AppenderRef ref="console" />
-	      <AppenderRef ref="file" />
-	     </logger>
-	
-	     
-	     <!-- rolling file에는 debug, console에는 info 분리하여 처리 가능하다. -->
-	     <logger name="com.test" additivity="false" >
-	      <AppenderRef ref="console" level="info" />
-	      <AppenderRef ref="file" level="info" />
-	     </logger>
-	
-	 </Loggers>
+                 
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+        </Root>
+ 
+    </Loggers>
+ 
 </Configuration>
-<!--  https://howtodoinjava.com/log4j2/log4j2-xml-configuration-example/  -->
