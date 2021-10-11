@@ -30,6 +30,12 @@ public class Page {
 	private boolean prev;
 	private boolean next;
 	
+	// 검색 키워드
+	private String searchTypeKeyword; 
+	
+	private String keyword;
+	private String searchType;
+	
 	// 페이징 로직 연산
 	private void pageDataCalc() {
 		 
@@ -116,5 +122,39 @@ public class Page {
 	public void setNext(boolean next) {
 		this.next = next;
 	}
+	public void setSearchTypeKeyword(String searchType, String keyword) {	
+		
+		
+	}
+
+	public String getSearchTypeKeyword() {
+	     //return searchTypeKeyword;
+		 if(searchType.equals("") || keyword.equals("")) {
+			 return ""; 
+		 } else {
+			 return "&searchType=" + searchType + "&keyword=" + keyword; 
+		 }  
+	}
+
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+
+	public String getSearchType() {
+		return searchType;
+	}
+
+
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+
 
 }

@@ -57,4 +57,17 @@ public class BoardServiceImpl implements BoardService {
 		return dao.listPage(displayPost, postNum);
 	}
 
+	@Override
+	public List<BoardVO> listPageSearch(int displayPost, int postNum, String searchType, String keyword)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return dao.listPageSearch(displayPost, postNum, searchType, keyword);
+	}
+
+	@Override
+	public int searchCount(String searchType, String keyword) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.searchCount(searchType, keyword);
+	}
+
 }

@@ -75,7 +75,9 @@
                 <SizeBasedTriggeringPolicy size="19500KB" />
             </Policies>
             <DefaultRolloverStrategy max="5"/>
-        </RollingFile>       
+        
+        </RollingFile>  
+                 
     </Appenders>
  
     <Loggers>	
@@ -104,7 +106,35 @@
 	      <AppenderRef ref="Console" />
 	      <AppenderRef ref="frameworkLog" />
 	     </logger>
-                 
+	     
+	    <!-- SQL Logger -->
+	    <!-- https://freehoon.tistory.com/113 -->
+	    <!--  
+		<logger name="jdbc.sqltiming" level="info" additivity="false">
+			<AppenderRef ref="Console"/> 
+		</logger>
+		
+		<logger name="jdbc.sqlonly" level="info" additivity="false"> 
+			<AppenderRef ref="Console"/> 
+		</logger>
+		-->
+		<!--  
+		<logger name="jdbc.audit" additivity="false"> 
+			<level value="warn"/>  
+			<AppenderRef ref="Console"/> 
+		</logger> 
+		
+		<logger name="jdbc.resultset" additivity="false">
+			<level value="warn" />
+			<AppenderRef ref="Console"/> 
+		</logger>
+		
+		<logger name="jdbc.resultsettable" additivity="false"> 
+			<level value="info"/>  
+			<AppenderRef ref="Console"/> 
+		</logger> 
+		-->
+	               
         <Root level="warn">
             <AppenderRef ref="Console"/>
         </Root>

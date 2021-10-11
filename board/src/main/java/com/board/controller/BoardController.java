@@ -21,6 +21,7 @@ import com.board.util.Page;
 public class BoardController {
 	private static final Logger LOGGER = LogManager.getLogger(BoardController.class);	
 	
+	/*
 	public static void main(String[] args) {
 	        try {
 				LOGGER.info("This is an INFO level log message!");
@@ -31,6 +32,7 @@ public class BoardController {
 			}
 	        
 	}
+	*/
 	 
 	@Inject
 	BoardService service;
@@ -153,10 +155,36 @@ public class BoardController {
 				
 		model.addAttribute("page", page);
 		model.addAttribute("list", list);	
-		// 현재 페이지
-		model.addAttribute("select", num);
-
+		model.addAttribute("select", num); // 현재 페이지
+	}
+	
+	// 게시물 목록 + 페이징 + 검색 
+	@RequestMapping(value="/listPageSearch", method = RequestMethod.GET)
+	public void getListPageSearch(Model model, @RequestParam("num") int num,
+			@RequestParam(value="searchType", required=false, defaultValue="title") String searchType, 
+			@RequestParam(value="keyword", required=false, defaultValue="") String keyword) throws Exception{
 		
+		// 페이징 
+		Page page = new Page();
+		page.setNum(num);
+		page.setCount(service.searchCount(searchType, keyword));
+		
+		// 검색 타입과 검색어
+		//page.setSearchTypeKeyword(searchType, keyword);
+		page.setSearchType(searchType);
+		page.setKeyword(keyword);
+		
+		List<BoardVO> list = null;
+		list = service.listPageSearch(page.getDisplayPost(), page.getPostNum(), searchType, keyword);
+		
+		LOGGER.debug("SEARCH keyWord : " + keyword);
+		model.addAttribute("page", page);
+		model.addAttribute("list", list);		
+		model.addAttribute("select", num); // 현재 페이지
+		
+		// 검색 상태 유지 작업 
+		//model.addAttribute("searchType", searchType);
+		//model.addAttribute("keyWord", keyword); 
 	}
 }
 
