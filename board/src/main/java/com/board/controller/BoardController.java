@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.domain.BoardVO;
 import com.board.service.BoardService;
+import com.board.util.Page;
 
 @Controller
 @RequestMapping("/board/")
@@ -92,7 +93,15 @@ public class BoardController {
 	// 게시물 목록 + 페이징
 	@RequestMapping(value="/listPage", method = RequestMethod.GET)
 	public void getListPage(Model model, @RequestParam("num") int num) throws Exception{
+		
+		// 페이징 V2
+		Page page = new Page();
+		page.setNum(num);
+		page.setCount(service.count());
 	
+		/*
+		// 페이징 V1
+
 		// 게시물 총 갯수 
 		int count = service.count();
 		
@@ -123,10 +132,31 @@ public class BoardController {
 			endPageNum = endPageNum_tmp;
 		}
 		
+		boolean prev = startPageNum == 1 ? false : true;
+		boolean next = endPageNum * pageNum_cnt >= count ? false : true;
+		*/
+		
 		List<BoardVO> list = null;
-		list = service.listPage(displayPost, postNum);
+		list = service.listPage(page.getDisplayPost(), page.getPostNum());
+		
+		/*
+		// 페이징 V1
+		// 시작 및 끝 번호
+		model.addAttribute("startPageNum", page.getStartPageNum());
+		model.addAttribute("endPageNum", page.getEndPageNum());
+		model.addAttribute("pageNum", page.getPageNum());	
+
+		// 이전 및 다음 
+		model.addAttribute("prev", page.getPrev());
+		model.addAttribute("next", page.getNext());	
+		*/
+				
+		model.addAttribute("page", page);
 		model.addAttribute("list", list);	
-		model.addAttribute("pageNum", pageNum);	
+		// 현재 페이지
+		model.addAttribute("select", num);
+
+		
 	}
 }
 

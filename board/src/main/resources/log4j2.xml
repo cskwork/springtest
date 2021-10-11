@@ -3,12 +3,12 @@
  
     <!-- Logging Properties -->
     <Properties>
-        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+        <Property name="LOG_PATTERN">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
+        <!-- <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property> -->
         <Property name="APP_LOG_ROOT">c:/log</Property>
     </Properties>
      
-    <Appenders>
-     
+    <Appenders> 
         <!-- Console Appender -->
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
@@ -56,7 +56,7 @@
                 <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 일별 로그 파일 생성-->
                 <SizeBasedTriggeringPolicy size="19500KB" />
             </Policies>
-            <DefaultRolloverStrategy max="50"/>
+            <DefaultRolloverStrategy max="100"/>
         </RollingFile>
          
         <RollingFile name="perfLog" fileName="${APP_LOG_ROOT}/app-perf.log"
@@ -75,12 +75,10 @@
                 <SizeBasedTriggeringPolicy size="19500KB" />
             </Policies>
             <DefaultRolloverStrategy max="5"/>
-        </RollingFile>
-         
+        </RollingFile>       
     </Appenders>
  
-    <Loggers>
-     	
+    <Loggers>	
      	<!-- 현재 추적중인 에러 로그 -->
         <Logger name="com.board.controller" additivity="false" level="trace">
             <AppenderRef ref="traceLog" />
@@ -110,7 +108,5 @@
         <Root level="warn">
             <AppenderRef ref="Console"/>
         </Root>
- 
     </Loggers>
- 
 </Configuration>
